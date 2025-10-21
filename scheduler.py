@@ -90,12 +90,24 @@ class BotScheduler:
         """Post Bible verse - Beijing time (Chinese 2-tweet thread)"""
         logger.info("[BEIJING] Posting Bible verse...")
         try:
-            # Generate verse
+            # Generate verse (use the same verse for Chinese)
             verse_text, reference = bible_module.get_verse()
-            _, chinese_main = bible_module.generate_post()
+            english_main = bible_module.format_tweet(verse_text, reference)
+            
+            # Translate to Chinese
+            from utils.translator import translator
+            chinese_verse = translator.translate(verse_text)
+            chinese_reference = translator.translate(reference)
+            chinese_main = f'"{chinese_verse}"\n\n{chinese_reference} (KJV)'
+            
+            # Ensure Chinese tweet fits limit
+            if len(chinese_main) > 280:
+                max_length = 280 - len(f'"\n\n{chinese_reference} (KJV)')
+                chinese_verse = chinese_verse[:max_length-3] + "..."
+                chinese_main = f'"{chinese_verse}"\n\n{chinese_reference} (KJV)'
             
             # Generate AI thread (1 reply for Chinese)
-            chinese_replies = ai_thread_generator.generate_bible_thread(verse_text, reference)
+            chinese_replies = ai_thread_generator.generate_bible_thread(verse_text, reference, language='zh')
             chinese_replies = chinese_replies[:1]  # Only 1 reply for 2-tweet thread
             
             # Post Chinese thread (main + 1 reply)
@@ -110,12 +122,12 @@ class BotScheduler:
         """Post combined markets - Beijing time (Chinese 2-tweet thread)"""
         logger.info("[BEIJING] Posting combined markets...")
         try:
-            # Generate combined markets post
+            # Generate combined markets post (get Chinese version)
             _, chinese = combined_markets_module.generate_post()
             
             # Generate AI thread (1 reply for Chinese)
             market_context = "Analyze these market movements"
-            chinese_replies = ai_thread_generator.generate_financial_thread(chinese, market_context)
+            chinese_replies = ai_thread_generator.generate_financial_thread(chinese, market_context, language='zh')
             chinese_replies = chinese_replies[:1]  # Only 1 reply for 2-tweet thread
             
             # Post Chinese thread (main + 1 reply)
@@ -130,12 +142,12 @@ class BotScheduler:
         """Post world news - Beijing time (Chinese 2-tweet thread)"""
         logger.info("[BEIJING] Posting world news...")
         try:
-            # Generate news post
+            # Generate news post (get Chinese version)
             _, chinese = news_module.generate_post()
             
             # Generate AI thread (1 reply for Chinese)
             news_context = "Provide context about this news story"
-            chinese_replies = ai_thread_generator.generate_news_thread(chinese, news_context)
+            chinese_replies = ai_thread_generator.generate_news_thread(chinese, news_context, language='zh')
             chinese_replies = chinese_replies[:1]  # Only 1 reply for 2-tweet thread
             
             # Post Chinese thread (main + 1 reply)

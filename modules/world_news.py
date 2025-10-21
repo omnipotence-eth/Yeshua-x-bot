@@ -7,42 +7,52 @@ import os
 logger = setup_logger(__name__)
 
 class WorldNewsModule:
-    """Generate single top news article from Finance, AI, or Robotics"""
+    """Generate single top AI breakthrough article"""
     
     def __init__(self):
         self.api_key = os.getenv('NEWS_API_KEY', '')
         self.base_url = "https://newsapi.org/v2/everything"
         
-        # Categories for focused news (will pick best one)
-        self.categories = {
-            'Finance': ['breakthrough finance', 'major investment', 'economic growth', 'fintech innovation'],
-            'AI': ['AI breakthrough', 'ChatGPT', 'artificial intelligence innovation', 'OpenAI'],
-            'Robotics': ['robotics breakthrough', 'automation innovation', 'robot advancement']
-        }
+        # AI breakthrough search terms for US/Global audience (Texas)
+        self.us_ai_terms = [
+            'OpenAI breakthrough',
+            'ChatGPT advancement', 
+            'Google AI innovation',
+            'Anthropic Claude',
+            'Microsoft AI',
+            'artificial intelligence breakthrough',
+            'AI model release',
+            'machine learning breakthrough'
+        ]
         
-        # Chinese-specific search terms
-        self.chinese_categories = {
-            'Finance': ['Alibaba', 'Tencent', 'China economy innovation'],
-            'AI': ['Baidu AI', 'ByteDance AI', 'Chinese AI breakthrough'],
-            'Robotics': ['China robotics', 'Chinese automation', 'BYD technology']
-        }
+        # AI breakthrough search terms for Chinese audience (Beijing)
+        self.chinese_ai_terms = [
+            'Baidu AI breakthrough',
+            'ByteDance AI innovation',
+            'Alibaba AI',
+            'Tencent AI',
+            'DeepSeek AI',
+            'Chinese AI breakthrough',
+            'China artificial intelligence',
+            'Huawei AI innovation'
+        ]
     
-    def fetch_global_news(self, category, search_terms):
-        """Fetch global/Western news for a specific category"""
+    def fetch_us_ai_news(self):
+        """Fetch US/Global AI breakthrough news for Texas timezone"""
         if not self.api_key:
             logger.warning("No NEWS_API_KEY found, using mock data")
-            return self._get_mock_global_news(category)
+            return self._get_mock_us_ai_news()
         
         try:
             # Try each search term until we get results
-            for term in search_terms:
+            for term in self.us_ai_terms:
                 params = {
                     'q': term,
                     'apiKey': self.api_key,
                     'language': 'en',
                     'sortBy': 'publishedAt',
-                    'pageSize': 3,
-                    'from': (datetime.now() - timedelta(days=2)).strftime('%Y-%m-%d')
+                    'pageSize': 5,
+                    'from': (datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d')
                 }
                 
                 response = requests.get(self.base_url, params=params, timeout=10)
@@ -52,41 +62,40 @@ class WorldNewsModule:
                     articles = data.get('articles', [])
                     
                     if articles:
-                        # Filter for positive/innovative news
-                        filtered = [a for a in articles if self._is_positive_news(a)]
+                        # Filter for positive/innovative AI news
+                        filtered = [a for a in articles if self._is_ai_breakthrough(a)]
                         if filtered:
                             article = filtered[0]
-                            logger.info(f"Fetched global {category} news: {article['title'][:50]}")
+                            logger.info(f"[US] Fetched AI news: {article['title'][:50]}")
                             return {
-                                'category': category,
-                                'title': article['title'][:120],
-                                'source': article.get('source', {}).get('name', 'News')
+                                'title': article['title'][:150],
+                                'source': article.get('source', {}).get('name', 'Tech News')
                             }
             
             # If no results found, return mock data
-            logger.warning(f"No global {category} news found, using mock data")
-            return self._get_mock_global_news(category)
+            logger.warning("No US AI news found, using mock data")
+            return self._get_mock_us_ai_news()
             
         except Exception as e:
-            logger.error(f"Error fetching global {category} news: {e}")
-            return self._get_mock_global_news(category)
+            logger.error(f"Error fetching US AI news: {e}")
+            return self._get_mock_us_ai_news()
     
-    def fetch_chinese_news(self, category, search_terms):
-        """Fetch China/Asia-specific news for a specific category"""
+    def fetch_chinese_ai_news(self):
+        """Fetch Chinese AI breakthrough news for Beijing timezone"""
         if not self.api_key:
             logger.warning("No NEWS_API_KEY found, using mock data")
-            return self._get_mock_chinese_news(category)
+            return self._get_mock_chinese_ai_news()
         
         try:
             # Try each search term until we get results
-            for term in search_terms:
+            for term in self.chinese_ai_terms:
                 params = {
                     'q': term,
                     'apiKey': self.api_key,
-                    'language': 'en',  # Fetch English articles about China
+                    'language': 'en',  # Fetch English articles about Chinese AI
                     'sortBy': 'publishedAt',
-                    'pageSize': 3,
-                    'from': (datetime.now() - timedelta(days=2)).strftime('%Y-%m-%d')
+                    'pageSize': 5,
+                    'from': (datetime.now() - timedelta(days=3)).strftime('%Y-%m-%d')
                 }
                 
                 response = requests.get(self.base_url, params=params, timeout=10)
@@ -96,140 +105,109 @@ class WorldNewsModule:
                     articles = data.get('articles', [])
                     
                     if articles:
-                        # Filter for positive/innovative news
-                        filtered = [a for a in articles if self._is_positive_news(a)]
+                        # Filter for positive/innovative AI news
+                        filtered = [a for a in articles if self._is_ai_breakthrough(a)]
                         if filtered:
                             article = filtered[0]
-                            logger.info(f"Fetched Chinese {category} news: {article['title'][:50]}")
+                            logger.info(f"[CN] Fetched AI news: {article['title'][:50]}")
                             return {
-                                'category': category,
-                                'title': article['title'][:120],
-                                'source': article.get('source', {}).get('name', 'News')
+                                'title': article['title'][:150],
+                                'source': article.get('source', {}).get('name', 'Tech News')
                             }
             
             # If no results found, return mock data
-            logger.warning(f"No Chinese {category} news found, using mock data")
-            return self._get_mock_chinese_news(category)
+            logger.warning("No Chinese AI news found, using mock data")
+            return self._get_mock_chinese_ai_news()
             
         except Exception as e:
-            logger.error(f"Error fetching Chinese {category} news: {e}")
-            return self._get_mock_chinese_news(category)
+            logger.error(f"Error fetching Chinese AI news: {e}")
+            return self._get_mock_chinese_ai_news()
     
-    def _is_positive_news(self, article):
-        """Check if news article is positive/constructive"""
+    def _is_ai_breakthrough(self, article):
+        """Check if article is about AI breakthroughs (positive/innovative)"""
+        # AI/tech keywords that indicate breakthroughs
+        ai_keywords = ['ai', 'artificial intelligence', 'machine learning', 'gpt', 'llm', 
+                      'neural network', 'deep learning', 'chatbot', 'model']
+        
+        # Positive breakthrough indicators
+        positive_keywords = ['breakthrough', 'innovation', 'advancement', 'new', 'launch', 
+                           'unveil', 'release', 'announce', 'improve', 'upgrade', 'revolutionize']
+        
+        # Negative keywords to filter out
         negative_keywords = ['crash', 'crisis', 'war', 'death', 'killed', 'disaster', 
-                            'fraud', 'scandal', 'layoff', 'bankruptcy']
+                           'fraud', 'scandal', 'layoff', 'lawsuit', 'controversy', 'fail']
         
         title = article.get('title', '').lower()
-        description = article.get('description', '').lower()
+        description = article.get('description', '').lower() if article.get('description') else ''
+        
+        # Must contain AI keywords
+        has_ai = any(keyword in title or keyword in description for keyword in ai_keywords)
+        if not has_ai:
+            return False
         
         # Filter out negative news
-        for keyword in negative_keywords:
-            if keyword in title or keyword in description:
-                return False
+        has_negative = any(keyword in title or keyword in description for keyword in negative_keywords)
+        if has_negative:
+            return False
         
-        return True
+        # Prefer articles with positive breakthrough indicators
+        has_positive = any(keyword in title or keyword in description for keyword in positive_keywords)
+        
+        return has_positive or has_ai  # Return true if AI-related and no negative keywords
     
-    def _get_mock_global_news(self, category):
-        """Fallback mock data for global news"""
-        mock_data = {
-            'Finance': {
-                'category': 'Finance',
-                'title': 'Global markets show resilience amid economic recovery',
-                'source': 'Financial Times'
-            },
-            'AI': {
-                'category': 'AI',
-                'title': 'OpenAI announces breakthrough in natural language processing',
-                'source': 'Tech News'
-            },
-            'Robotics': {
-                'category': 'Robotics',
-                'title': 'Tesla unveils advanced humanoid robot for manufacturing',
-                'source': 'Innovation Daily'
-            }
+    def _get_mock_us_ai_news(self):
+        """Fallback mock data for US AI news"""
+        return {
+            'title': 'OpenAI unveils GPT-5 with revolutionary reasoning capabilities and multimodal understanding',
+            'source': 'TechCrunch'
         }
-        return mock_data.get(category, mock_data['Finance'])
     
-    def _get_mock_chinese_news(self, category):
-        """Fallback mock data for Chinese news"""
-        mock_data = {
-            'Finance': {
-                'category': 'Finance',
-                'title': 'Chinese tech stocks rally as economic indicators improve',
-                'source': 'Asia Markets'
-            },
-            'AI': {
-                'category': 'AI',
-                'title': 'Baidu launches advanced AI language model competing globally',
-                'source': 'China Tech'
-            },
-            'Robotics': {
-                'category': 'Robotics',
-                'title': 'Chinese manufacturers adopt AI-powered robotics at record pace',
-                'source': 'Manufacturing Asia'
-            }
+    def _get_mock_chinese_ai_news(self):
+        """Fallback mock data for Chinese AI news"""
+        return {
+            'title': 'Baidu launches ERNIE 4.0 AI model, surpassing GPT-4 in Chinese language tasks',
+            'source': 'South China Morning Post'
         }
-        return mock_data.get(category, mock_data['Finance'])
     
     def generate_post(self):
-        """Generate single top news article (global for EN, China-focused for ZH)"""
+        """Generate AI breakthrough articles (US for English, Chinese for Chinese)"""
         
-        # Fetch ONE best global news article for English version
-        best_global_news = None
-        for category, search_terms in self.categories.items():
-            news_item = self.fetch_global_news(category, search_terms)
-            if news_item:
-                best_global_news = news_item
-                break  # Take the first good result
+        # Fetch US/Global AI news for English (Texas timezone)
+        us_ai_news = self.fetch_us_ai_news()
         
-        # Fallback if no news found
-        if not best_global_news:
-            best_global_news = self._get_mock_global_news('AI')
+        # Fetch Chinese AI news for Chinese (Beijing timezone)
+        chinese_ai_news = self.fetch_chinese_ai_news()
         
-        # Fetch ONE best Chinese/Asian news article for Chinese version
-        best_chinese_news = None
-        for category, search_terms in self.chinese_categories.items():
-            news_item = self.fetch_chinese_news(category, search_terms)
-            if news_item:
-                best_chinese_news = news_item
-                break  # Take the first good result
-        
-        # Fallback if no news found
-        if not best_chinese_news:
-            best_chinese_news = self._get_mock_chinese_news('AI')
-        
-        # Format English tweet (single article)
-        english_tweet = f"Breaking: {best_global_news['category']} News\n\n"
-        english_tweet += f"{best_global_news['title']}\n\n"
-        english_tweet += f"Source: {best_global_news['source']}\n\n"
-        english_tweet += "#News #Innovation #Technology"
+        # Format English tweet (US AI breakthrough)
+        english_tweet = f"🚀 AI Breakthrough\n\n"
+        english_tweet += f"{us_ai_news['title']}\n\n"
+        english_tweet += f"Source: {us_ai_news['source']}\n\n"
+        english_tweet += "#AI #ArtificialIntelligence #Innovation"
         
         # Ensure it fits
         if len(english_tweet) > 280:
-            max_title = 280 - len(f"Breaking: {best_global_news['category']} News\n\n\n\nSource: {best_global_news['source']}\n\n#News #Innovation #Technology")
-            english_tweet = f"Breaking: {best_global_news['category']} News\n\n"
-            english_tweet += f"{best_global_news['title'][:max_title]}...\n\n"
-            english_tweet += f"Source: {best_global_news['source']}\n\n"
-            english_tweet += "#News #Innovation #Technology"
+            max_title = 280 - len(f"🚀 AI Breakthrough\n\n\n\nSource: {us_ai_news['source']}\n\n#AI #ArtificialIntelligence #Innovation")
+            english_tweet = f"🚀 AI Breakthrough\n\n"
+            english_tweet += f"{us_ai_news['title'][:max_title]}...\n\n"
+            english_tweet += f"Source: {us_ai_news['source']}\n\n"
+            english_tweet += "#AI #ArtificialIntelligence #Innovation"
         
-        # Format Chinese tweet (single article, translated)
-        category_cn = translator.translate(best_chinese_news['category'])
-        title_cn = translator.translate(best_chinese_news['title'])
-        source_cn = translator.translate(best_chinese_news['source'])
+        # Format Chinese tweet (Chinese AI breakthrough, translated)
+        title_cn = translator.translate(chinese_ai_news['title'])
+        source_cn = translator.translate(chinese_ai_news['source'])
         
-        chinese_tweet = f"突发: {category_cn}新闻\n\n"
+        chinese_tweet = f"🚀 人工智能突破\n\n"
         chinese_tweet += f"{title_cn}\n\n"
         chinese_tweet += f"来源: {source_cn}\n\n"
-        chinese_tweet += "#新闻 #创新 #技术"
+        chinese_tweet += "#人工智能 #AI #创新"
         
         # Ensure it fits
         if len(chinese_tweet) > 280:
-            max_title = 280 - len(f"突发: {category_cn}新闻\n\n\n\n来源: {source_cn}\n\n#新闻 #创新 #技术")
-            chinese_tweet = f"突发: {category_cn}新闻\n\n"
+            max_title = 280 - len(f"🚀 人工智能突破\n\n\n\n来源: {source_cn}\n\n#人工智能 #AI #创新")
+            chinese_tweet = f"🚀 人工智能突破\n\n"
             chinese_tweet += f"{title_cn[:max_title]}...\n\n"
             chinese_tweet += f"来源: {source_cn}\n\n"
-            chinese_tweet += "#新闻 #创新 #技术"
+            chinese_tweet += "#人工智能 #AI #创新"
         
         return english_tweet, chinese_tweet
 

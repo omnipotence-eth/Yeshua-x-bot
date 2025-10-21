@@ -90,27 +90,96 @@ Do NOT include the main tweet or any hashtags."""
             logger.error(f"Error generating AI thread: {e}")
             return []
     
-    def generate_financial_thread(self, main_tweet, market_data):
-        """Generate a thread for financial market updates"""
+    def generate_financial_thread(self, main_tweet, market_data, language='en'):
+        """Generate a thread for financial market updates
+        
+        Args:
+            main_tweet: The main tweet content
+            market_data: Market data context
+            language: 'en' for English, 'zh' for Chinese
+        """
         context = f"Market data: {market_data}\n\nProvide insights about market trends, what's driving the changes, and what investors should watch."
-        return self.generate_thread(main_tweet, context, max_tweets=2)
+        tweets = self.generate_thread(main_tweet, context, max_tweets=2)
+        
+        # Translate to Chinese if needed
+        if language == 'zh' and tweets:
+            from utils.translator import translator
+            translated_tweets = []
+            for tweet in tweets:
+                translated = translator.translate(tweet)
+                if len(translated) > 280:
+                    translated = translated[:277] + "..."
+                translated_tweets.append(translated)
+            return translated_tweets
+        
+        return tweets
     
-    def generate_crypto_thread(self, main_tweet, crypto_data):
+    def generate_crypto_thread(self, main_tweet, crypto_data, language='en'):
         """Generate a thread for crypto market updates"""
         context = f"Crypto data: {crypto_data}\n\nProvide insights about crypto market movements, trends, and important factors."
-        return self.generate_thread(main_tweet, context, max_tweets=2)
+        tweets = self.generate_thread(main_tweet, context, max_tweets=2)
+        
+        # Translate to Chinese if needed
+        if language == 'zh' and tweets:
+            from utils.translator import translator
+            translated_tweets = []
+            for tweet in tweets:
+                translated = translator.translate(tweet)
+                if len(translated) > 280:
+                    translated = translated[:277] + "..."
+                translated_tweets.append(translated)
+            return translated_tweets
+        
+        return tweets
     
-    def generate_news_thread(self, main_tweet, news_items):
+    def generate_news_thread(self, main_tweet, news_items, language='en'):
         """Generate a thread for news updates"""
         context = f"News items: {news_items}\n\nProvide deeper insights or explanations about these news items and their significance."
-        return self.generate_thread(main_tweet, context, max_tweets=2)
+        tweets = self.generate_thread(main_tweet, context, max_tweets=2)
+        
+        # Translate to Chinese if needed
+        if language == 'zh' and tweets:
+            from utils.translator import translator
+            translated_tweets = []
+            for tweet in tweets:
+                translated = translator.translate(tweet)
+                if len(translated) > 280:
+                    translated = translated[:277] + "..."
+                translated_tweets.append(translated)
+            return translated_tweets
+        
+        return tweets
     
-    def generate_bible_thread(self, verse_text, reference):
-        """Generate an insightful thread for a Bible verse"""
+    def generate_bible_thread(self, verse_text, reference, language='en'):
+        """Generate an insightful thread for a Bible verse
+        
+        Args:
+            verse_text: The Bible verse text
+            reference: The verse reference (e.g. "John 3:16")
+            language: 'en' for English, 'zh' for Chinese
+        """
         if not self.enabled:
             return []
         
         try:
+            if language == 'zh':
+                # Generate in English first, then translate
+                english_tweets = self.generate_bible_thread(verse_text, reference, language='en')
+                
+                # Translate to Chinese
+                from utils.translator import translator
+                chinese_tweets = []
+                for tweet in english_tweets:
+                    translated = translator.translate(tweet)
+                    # Ensure it fits 280 char limit
+                    if len(translated) > 280:
+                        translated = translated[:277] + "..."
+                    chinese_tweets.append(translated)
+                
+                logger.info(f"Translated {len(chinese_tweets)} Bible thread tweets to Chinese")
+                return chinese_tweets
+            
+            # Generate English tweets
             prompt = f"""You are a Christian faith leader sharing Bible insights.
 
 BIBLE VERSE:

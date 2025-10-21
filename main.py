@@ -38,29 +38,40 @@ def test_modules():
     logger.info("Testing all modules...")
     
     from modules.bible_verse import bible_module
+    from modules.combined_markets import combined_markets_module
     from modules.world_news import news_module
-    from modules.financial_market import financial_module
-    from modules.crypto_market import crypto_module
-    from modules.bnb_update import bnb_module
     
-    modules = [
-        ('Bible Verse', bible_module),
-        ('World News', news_module),
-        ('Financial Market', financial_module),
-        ('Crypto Market', crypto_module),
-        ('BNB Update', bnb_module),
-    ]
+    # Test Bible Verse
+    try:
+        logger.info("Testing Bible Verse module...")
+        verse_text, reference = bible_module.get_verse()
+        english = bible_module.format_tweet(verse_text, reference)
+        logger.info(f"✓ Bible Verse module working")
+        logger.info(f"  Preview: {english[:100]}...")
+    except Exception as e:
+        logger.error(f"✗ Bible Verse module failed: {e}")
     
-    for name, module in modules:
-        try:
-            logger.info(f"Testing {name} module...")
-            english, chinese = module.generate_post()
-            logger.info(f"✓ {name} module working")
-            logger.info(f"  English preview: {english[:100]}...")
-            if config.ENABLE_CHINESE_POSTS:
-                logger.info(f"  Chinese preview: {chinese[:100]}...")
-        except Exception as e:
-            logger.error(f"✗ {name} module failed: {e}")
+    # Test Combined Markets
+    try:
+        logger.info("Testing Combined Markets module...")
+        english, chinese = combined_markets_module.generate_post()
+        logger.info(f"✓ Combined Markets module working")
+        logger.info(f"  English preview: {english[:100]}...")
+        if config.ENABLE_CHINESE_POSTS:
+            logger.info(f"  Chinese preview: {chinese[:100]}...")
+    except Exception as e:
+        logger.error(f"✗ Combined Markets module failed: {e}")
+    
+    # Test World News
+    try:
+        logger.info("Testing World News module...")
+        english, chinese = news_module.generate_post()
+        logger.info(f"✓ World News module working")
+        logger.info(f"  English preview: {english[:100]}...")
+        if config.ENABLE_CHINESE_POSTS:
+            logger.info(f"  Chinese preview: {chinese[:100]}...")
+    except Exception as e:
+        logger.error(f"✗ World News module failed: {e}")
     
     logger.info("Module testing complete!")
 

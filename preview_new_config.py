@@ -30,13 +30,13 @@ def print_thread(tweets, title):
 print_header("YESHUA X BOT - NEW OPTIMIZED CONFIGURATION")
 print("\nDaily Schedule:")
 print("  Texas Time (English 3-tweet threads):")
-print("    7:00 AM - Bible Verse")
-print("    8:00 AM - Combined Markets (Finance + Crypto)")
-print("    9:00 AM - World News (Single Top Article)")
+print("    7:00 AM - Bible Verse (KJV)")
+print("    8:00 AM - US Markets (S&P, Dow, Nasdaq + Top Crypto)")
+print("    9:00 AM - AI Breakthroughs (US/Global AI News)")
 print("\n  Beijing Time (Chinese 2-tweet threads):")
-print("    7:00 AM - Bible Verse")
-print("    8:00 AM - Combined Markets")
-print("    9:00 AM - World News")
+print("    7:00 AM - 圣经经文 (Same verse, translated)")
+print("    8:00 AM - 中国市场 (Shanghai, Hang Seng, Alibaba + Crypto)")
+print("    9:00 AM - AI突破 (Chinese AI News)")
 print("\nDaily Tweet Count:")
 print("  - Texas: 3 content × 3 tweets = 9 tweets/day")
 print("  - Beijing: 3 content × 2 tweets = 6 tweets/day")
@@ -51,9 +51,21 @@ print_header("1. BIBLE VERSE")
 print("\nFetching Bible verse from bible-api.com (KJV)...")
 
 try:
+    # Generate the same verse for both English and Chinese
     verse_text, reference = bible_module.get_verse()
     english_main = bible_module.format_tweet(verse_text, reference)
-    _, chinese_main = bible_module.generate_post()
+    
+    # Translate the SAME verse to Chinese (don't generate a new one)
+    from utils.translator import translator
+    chinese_verse = translator.translate(verse_text)
+    chinese_reference = translator.translate(reference)
+    chinese_main = f'"{chinese_verse}"\n\n{chinese_reference} (KJV)'
+    
+    # Ensure Chinese tweet fits limit
+    if len(chinese_main) > 280:
+        max_length = 280 - len(f'"\n\n{chinese_reference} (KJV)')
+        chinese_verse = chinese_verse[:max_length-3] + "..."
+        chinese_main = f'"{chinese_verse}"\n\n{chinese_reference} (KJV)'
     
     print(f"Verse: {reference}")
     print(f"Text: {verse_text[:100]}...")
@@ -66,9 +78,9 @@ try:
     
     print_thread(english_thread, "TEXAS (English 3-tweet thread)")
     
-    # Chinese 2-tweet thread
+    # Chinese 2-tweet thread (using SAME verse, translated)
     print("\nGenerating Chinese AI thread (1 reply)...")
-    chinese_replies = ai_thread_generator.generate_bible_thread(verse_text, reference)
+    chinese_replies = ai_thread_generator.generate_bible_thread(verse_text, reference, language='zh')
     chinese_replies = chinese_replies[:1]
     chinese_thread = [chinese_main] + chinese_replies
     
@@ -82,8 +94,8 @@ except Exception as e:
 # ============================================================================
 # 2. COMBINED MARKETS
 # ============================================================================
-print_header("2. COMBINED MARKETS (Finance + Crypto)")
-print("\nFetching market data from yfinance, CoinGecko, Alternative.me...")
+print_header("2. COMBINED MARKETS")
+print("\nFetching US & Chinese market data from yfinance, CoinGecko, Alternative.me...")
 
 try:
     english, chinese = combined_markets_module.generate_post()
@@ -100,7 +112,7 @@ try:
     
     # Chinese 2-tweet thread
     print("\nGenerating Chinese AI thread (1 reply)...")
-    chinese_replies = ai_thread_generator.generate_financial_thread(chinese, "Market analysis")
+    chinese_replies = ai_thread_generator.generate_financial_thread(chinese, "Market analysis", language='zh')
     chinese_replies = chinese_replies[:1]
     chinese_thread = [chinese] + chinese_replies
     
@@ -114,8 +126,8 @@ except Exception as e:
 # ============================================================================
 # 3. WORLD NEWS
 # ============================================================================
-print_header("3. WORLD NEWS (Single Top Article)")
-print("\nFetching top news article from NewsAPI...")
+print_header("3. AI BREAKTHROUGHS (AI-Only News)")
+print("\nFetching AI breakthrough news from NewsAPI...")
 
 try:
     english, chinese = news_module.generate_post()
@@ -132,7 +144,7 @@ try:
     
     # Chinese 2-tweet thread
     print("\nGenerating Chinese AI thread (1 reply)...")
-    chinese_replies = ai_thread_generator.generate_news_thread(chinese, "News context")
+    chinese_replies = ai_thread_generator.generate_news_thread(chinese, "News context", language='zh')
     chinese_replies = chinese_replies[:1]
     chinese_thread = [chinese] + chinese_replies
     
@@ -152,22 +164,22 @@ print("="*80)
 
 print("\nYour bot is configured to post:")
 print("\n1. BIBLE VERSE")
-print("   - Daily inspiration from KJV")
-print("   - Texas: 3-tweet thread with spiritual insights")
-print("   - Beijing: 2-tweet thread with AI context")
+print("   - Daily inspiration from KJV (same verse for both languages)")
+print("   - Texas: 3-tweet thread with spiritual insights (English)")
+print("   - Beijing: 2-tweet thread with AI context (Chinese, translated)")
 
 print("\n2. COMBINED MARKETS")
-print("   - S&P 500, Nasdaq, Gold (traditional)")
-print("   - BTC, ETH, BNB (crypto)")
-print("   - Fear & Greed Index")
-print("   - Texas: 3-tweet thread with market analysis")
-print("   - Beijing: 2-tweet thread with AI insights")
+print("   - Texas: S&P 500, Dow Jones, Nasdaq + BTC, ETH, BNB, SOL")
+print("   - Beijing: Shanghai, Hang Seng, Alibaba + BTC, ETH, BNB")
+print("   - Fear & Greed Index for both")
+print("   - Texas: 3-tweet thread with AI market analysis")
+print("   - Beijing: 2-tweet thread with AI insights (translated)")
 
-print("\n3. WORLD NEWS")
-print("   - Single top article (Finance/AI/Robotics)")
-print("   - Global news for English, China-focused for Chinese")
-print("   - Texas: 3-tweet thread with deeper context")
-print("   - Beijing: 2-tweet thread with AI analysis")
+print("\n3. AI BREAKTHROUGHS (AI-only content)")
+print("   - Texas: US/Global AI news (OpenAI, Google, Microsoft, Anthropic)")
+print("   - Beijing: Chinese AI news (Baidu, ByteDance, Alibaba, Tencent)")
+print("   - Texas: 3-tweet thread with deeper AI context")
+print("   - Beijing: 2-tweet thread with AI analysis (translated)")
 
 print("\nAPIs Used:")
 print("  - bible-api.com (Free, KJV)")

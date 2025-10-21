@@ -10,15 +10,22 @@ An automated X (Twitter) bot that posts daily spiritual content and market updat
 - AI-generated spiritual insights and practical applications
 
 ### 2. **Combined Markets** 💹
-- **Traditional Markets**: S&P 500, Nasdaq, Gold
-- **Crypto Markets**: Bitcoin, Ethereum, BNB
+**Texas (US Markets):**
+- **US Markets**: S&P 500, Dow Jones, Nasdaq
+- **Top Crypto**: Bitcoin, Ethereum, BNB, Solana
 - Fear & Greed Index for market sentiment
-- AI-powered market analysis and investor insights
+- AI-powered market analysis
 
-### 3. **World News** 📰
-- Single top article from Finance, AI, or Robotics
-- Global news for English audience
-- China-focused news for Chinese audience
+**Beijing (Chinese Markets):**
+- **Chinese Markets**: Shanghai Composite, Hang Seng, Alibaba
+- **Top Crypto**: Bitcoin, Ethereum, BNB
+- Fear & Greed Index for market sentiment
+- AI-powered market insights
+
+### 3. **AI Breakthroughs** 🚀
+- **ONLY AI breakthroughs and innovations**
+- **Texas (English)**: US/Global AI news (OpenAI, Google, Microsoft)
+- **Beijing (Chinese)**: Chinese AI news (Baidu, ByteDance, Alibaba)
 - AI-generated context and deeper analysis
 
 ---
@@ -26,14 +33,14 @@ An automated X (Twitter) bot that posts daily spiritual content and market updat
 ## ⏰ Posting Schedule
 
 ### **Texas Time (English 3-tweet threads)**
-- **7:00 AM** - Bible Verse
-- **8:00 AM** - Combined Markets
-- **9:00 AM** - World News
+- **7:00 AM** - Bible Verse (KJV)
+- **8:00 AM** - US Markets (S&P, Dow, Nasdaq + Crypto)
+- **9:00 AM** - AI Breakthroughs (US/Global AI News)
 
 ### **Beijing Time (Chinese 2-tweet threads)**
-- **7:00 AM** - Bible Verse
-- **8:00 AM** - Combined Markets
-- **9:00 AM** - World News
+- **7:00 AM** - 圣经经文 (Same verse, translated)
+- **8:00 AM** - 中国市场 (Shanghai, Hang Seng, Alibaba + Crypto)
+- **9:00 AM** - AI突破 (Chinese AI News)
 
 ---
 
@@ -217,7 +224,7 @@ SCHEDULE_CONFIG = {
 }
 
 # Top Crypto Assets (for combined markets post)
-TOP_CRYPTO_ASSETS = ['bitcoin', 'ethereum', 'binancecoin']
+TOP_CRYPTO_ASSETS = ['bitcoin', 'ethereum', 'binancecoin', 'solana']
 
 # Tweet Character Limit
 TWEET_CHAR_LIMIT = 280

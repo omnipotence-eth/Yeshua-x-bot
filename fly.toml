@@ -11,9 +11,16 @@ kill_timeout = 5
   LOG_LEVEL = "INFO"
   ENABLE_CHINESE_POSTS = "true"
   DRY_RUN = "false"
+  TZ = "America/Chicago"  # Texas timezone
 
 [deploy]
   strategy = "immediate"
+
+# VM configuration
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 256
 
 # No HTTP services needed - this is a background worker
 [experimental]
