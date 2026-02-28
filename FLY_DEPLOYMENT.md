@@ -1,5 +1,5 @@
-# 🚀 Fly.io Deployment Guide
-## Yeshua X Bot
+# 🚀 Fly.io Deployment Guide  
+## Yeshua X Bot · Tremayne Timms
 
 ---
 
@@ -23,8 +23,8 @@
 Your bot needs these environment variables. **Never commit these to git!**
 
 ```bash
-# Navigate to your bot directory
-cd "C:\Users\ttimm\Desktop\Yeshua X Bot"
+# Navigate to the project directory
+cd /path/to/yeshua-x-bot
 
 # Log in to Fly.io
 fly auth login

@@ -1,6 +1,5 @@
-# 🚀 Deploy Your Bot NOW - Quick Start
-
-## ⚡ **Quick Deploy (5 Minutes)**
+# 🚀 Deploy Your Bot NOW — Quick Start  
+## Yeshua X Bot · Tremayne Timms
 
 ### **Step 1: Install Fly CLI**
 

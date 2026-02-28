@@ -2,7 +2,9 @@
 
 An automated X (Twitter) bot that posts daily spiritual content and market updates in English and Chinese, powered by AI insights.
 
-## 📊 What It Posts
+**Repository:** [github.com/omnipotence-eth/Yeshua-x-bot](https://github.com/omnipotence-eth/Yeshua-x-bot) · **Author:** [Tremayne Timms](https://github.com/omnipotence-eth) · MIT License
+
+---
 
 ### 1. **Bible Verse** 📖
 - Daily inspiration from the King James Version (KJV)
@@ -83,20 +85,20 @@ An automated X (Twitter) bot that posts daily spiritual content and market updat
 Yeshua X Bot/
 ├── modules/
 │   ├── bible_verse.py          # Daily Bible verses (KJV)
-│   ├── combined_markets.py     # Finance + Crypto markets
-│   └── world_news.py           # Single top news article
+│   ├── combined_markets.py     # US & Chinese finance + crypto
+│   └── world_news.py           # AI breakthrough news (NewsAPI)
 ├── utils/
 │   ├── ai_thread_generator.py  # Groq AI thread generation
 │   ├── cache.py                # API response caching
-│   ├── logger.py               # Logging system
-│   ├── translator.py           # Chinese translation
-│   └── twitter_client.py       # X API integration
-├── config.py                   # Configuration settings
-├── main.py                     # Entry point
-├── scheduler.py                # Job scheduling
+│   ├── logger.py               # Logging (UTF-8 safe)
+│   ├── translator.py           # Chinese translation (deep-translator)
+│   └── twitter_client.py       # X (Twitter) API client
+├── config.py                   # Configuration and env
+├── main.py                     # Entry point and CLI
+├── scheduler.py                # APScheduler jobs (Texas + Beijing)
 ├── requirements.txt            # Dependencies
-├── .env                        # Environment variables (not tracked)
-└── [deployment files]          # Docker, Railway, Render configs
+├── .env.example                # Example env (copy to .env)
+└── [deployment]                # Dockerfile, fly.toml, railway.json, render.yaml
 ```
 
 ---
@@ -105,8 +107,8 @@ Yeshua X Bot/
 
 ### **1. Clone the Repository**
 ```bash
-git clone <your-repo-url>
-cd "Yeshua X Bot"
+git clone https://github.com/omnipotence-eth/Yeshua-x-bot.git
+cd Yeshua-x-bot
 ```
 
 ### **2. Install Dependencies**
@@ -116,7 +118,13 @@ pip install -r requirements.txt
 
 ### **3. Set Up Environment Variables**
 
-Create a `.env` file in the project root:
+Copy the example file and fill in your credentials:
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` with your values (never commit `.env` to version control; it is in `.gitignore`):
 
 ```env
 # X (Twitter) API Credentials
@@ -168,7 +176,7 @@ python main.py --test
 
 ### **7. Deploy**
 
-See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions.
+See [DEPLOYMENT.md](DEPLOYMENT.md) for deployment options and guides (Fly.io, Railway, Render, Docker).
 
 **Quick deploy to Railway:**
 ```bash
@@ -302,18 +310,23 @@ Logs are stored in the console output. Key events logged:
 
 ## 🤝 Contributing
 
-This is a personal project, but suggestions are welcome! Open an issue or submit a pull request.
+Suggestions and improvements are welcome. Please open an issue or submit a pull request.
 
 ---
 
 ## 📄 License
 
-MIT License - see [LICENSE](LICENSE) file for details.
+MIT License — see [LICENSE](LICENSE) for details.
+
+**Interview / portfolio:** See [INTERVIEW_OVERVIEW.md](INTERVIEW_OVERVIEW.md) for a concise technical overview (technologies, architecture, talking points).
 
 ---
 
 ## 🙏 Credits
 
+**Author & maintainer:** [Tremayne Timms](https://github.com/omnipotence-eth)
+
+**APIs & services:**
 - **Bible API**: [bible-api.com](https://bible-api.com)
 - **News API**: [newsapi.org](https://newsapi.org)
 - **CoinGecko API**: [coingecko.com](https://www.coingecko.com)
@@ -322,12 +335,6 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
 
-## 📞 Support
+## 📞 Contact
 
-For issues, questions, or suggestions:
-- Open an issue on GitHub
-- Check [DEPLOYMENT.md](DEPLOYMENT.md) for deployment help
-
----
-
-**Built with ❤️ for spreading inspiration and knowledge**
+For questions or feedback, open an issue on GitHub. Deployment help: [DEPLOYMENT.md](DEPLOYMENT.md).

@@ -1,5 +1,5 @@
-# Codebase Audit Summary
-## Yeshua X Bot - Complete Audit & Fixes
+# Codebase Audit Summary  
+## Yeshua X Bot — Tremayne Timms
 
 ---
 

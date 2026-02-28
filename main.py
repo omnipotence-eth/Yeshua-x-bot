@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-Yeshua X Bot - Automated posting bot for inspirational and market updates
+Yeshua X Bot — Automated X (Twitter) posting bot for daily inspiration and market updates.
+Author: Tremayne Timms
 """
 
 import sys
@@ -106,7 +107,7 @@ def run_bot():
 def main():
     """Parse arguments and run appropriate command"""
     parser = argparse.ArgumentParser(
-        description='Yeshua X Bot - Automated posting bot for inspirational and market updates'
+        description='Yeshua X Bot — Daily inspiration and market updates (Tremayne Timms)'
     )
     parser.add_argument(
         '--test',

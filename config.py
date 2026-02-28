@@ -24,18 +24,14 @@ LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
 TEXAS_TZ = pytz.timezone('America/Chicago')
 BEIJING_TZ = pytz.timezone('Asia/Shanghai')
 
-# Schedule Times (24-hour format)
+# Schedule Times (24-hour format) - Texas & Beijing 7:00, 8:00, 9:00 AM
 SCHEDULE_CONFIG = {
     'bible_verse': {'hour': 7, 'minute': 0},
-    'financial_market': {'hour': 8, 'minute': 0},
-    'crypto_market': {'hour': 9, 'minute': 0},
-    'bnb_update': {'hour': 10, 'minute': 0},
-    'world_news': {'hour': 11, 'minute': 0},
+    'combined_markets': {'hour': 8, 'minute': 0},
+    'world_news': {'hour': 9, 'minute': 0},
 }
 
-# Twitter API Rate Limits (Free Tier)
-# Free tier typically allows 1,500 tweets/month (~50/day)
-# We'll post ~10 times per day (5 English + 5 Chinese) = ~300/month
+# Twitter API Rate Limits (Free Tier: 500 tweets/month)
 MAX_TWEETS_PER_DAY = 50
 TWEET_CHAR_LIMIT = 280
 
@@ -44,8 +40,6 @@ BIBLE_API_URL = "https://bible-api.com"
 NEWS_API_URL = "https://newsapi.org/v2"
 COINGECKO_API_URL = "https://api.coingecko.com/api/v3"
 
-# Top Assets to Track
-TOP_CRYPTO_ASSETS = ['bitcoin', 'ethereum', 'binancecoin', 'solana', 'cardano']
-TOP_FINANCIAL_INDICES = ['SPY', 'QQQ', 'DIA', 'GLD', 'EURUSD']
-TOP_BNB_TOKENS = ['binancecoin', 'pancakeswap-token', 'trust-wallet-token']
+# Top crypto assets for combined markets posts
+TOP_CRYPTO_ASSETS = ['bitcoin', 'ethereum', 'binancecoin', 'solana']
 
