@@ -1,4 +1,4 @@
-# 🙏 Yeshua X Bot
+# Yeshua X Bot
 
 An automated X (Twitter) bot that posts daily spiritual content and market updates in English and Chinese, powered by AI insights.
 
