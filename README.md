@@ -1,6 +1,6 @@
 # Yeshua X Bot
 
-An automated X (Twitter) bot that posts daily spiritual content and market updates in English and Chinese, powered by AI insights.
+A **Python-based social media automation bot** for X (Twitter) that runs on a fixed schedule and posts daily spiritual content, market updates, and AI news in English and Chinese—powered by external APIs and an LLM for thread generation.
 
 **Repository:** [github.com/omnipotence-eth/Yeshua-x-bot](https://github.com/omnipotence-eth/Yeshua-x-bot) · **Author:** [Tremayne Timms](https://github.com/omnipotence-eth) · MIT License
 
@@ -63,19 +63,21 @@ An automated X (Twitter) bot that posts daily spiritual content and market updat
 
 ## 🔧 Technology Stack
 
+**Stack type:** Scheduled content automation — Python runtime, job scheduler, REST APIs, LLM (Groq), containerized/PaaS deployment.
+
 ### **Core**
 - Python 3.11+
-- APScheduler (job scheduling)
-- Tweepy (X API integration)
+- APScheduler (cron-style job scheduling)
+- Tweepy (X API client)
 
 ### **APIs Used**
-- **bible-api.com** - KJV Bible verses (Free)
-- **NewsAPI** - World news (100 requests/day free)
-- **yfinance** - Traditional market data (Unlimited)
-- **CoinGecko** - Cryptocurrency prices (Free tier)
-- **Alternative.me** - Fear & Greed Index (Free)
-- **Groq AI** - AI insights with Llama 3.3 ($5/month free credits)
-- **Google Translator** - Chinese translation (Free)
+- **bible-api.com** — KJV Bible verses (free)
+- **NewsAPI** — News (100 requests/day free)
+- **yfinance** — Traditional market data (unlimited)
+- **CoinGecko** — Cryptocurrency prices (free tier)
+- **Alternative.me** — Fear & Greed Index (free)
+- **Groq** — AI/LLM insights, Llama 3.3 (free-tier credits)
+- **deep-translator (Google)** — English → Chinese (free)
 
 ---
 

@@ -1,5 +1,6 @@
 # Yeshua X Bot — Project Overview for Interviews
 
+**Project type:** Social media automation bot (scheduled content pipeline)  
 **Author:** [Tremayne Timms](https://github.com/omnipotence-eth)  
 **License:** MIT  
 **Repository:** [github.com/omnipotence-eth/Yeshua-x-bot](https://github.com/omnipotence-eth/Yeshua-x-bot)  
@@ -9,7 +10,7 @@
 
 ## What It Does
 
-**Yeshua X Bot** is an automated X (Twitter) bot that posts daily content in two languages and two time zones:
+**Yeshua X Bot** is a **scheduled social media automation bot** for X (Twitter). It runs continuously and posts daily content in two languages and two time zones:
 
 1. **Bible verse** — KJV verse + AI-generated spiritual insight (same verse in English and Chinese).
 2. **Markets** — US indices + crypto (Texas) and Chinese indices + crypto (Beijing), with sentiment and AI analysis.
@@ -20,6 +21,8 @@ Posts are **threads**: 3-tweet threads in English (Texas time), 2-tweet threads 
 ---
 
 ## Technologies Used
+
+**Stack:** Python automation · job scheduler (APScheduler) · REST/API integrations · LLM (Groq) · containerized/PaaS deployment.
 
 | Layer | Technology | Role |
 |-------|------------|------|
