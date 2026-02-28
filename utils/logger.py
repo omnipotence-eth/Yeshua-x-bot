@@ -9,9 +9,11 @@ def setup_logger(name):
     logger.setLevel(getattr(logging, config.LOG_LEVEL))
     
     # Console handler with UTF-8 encoding for Chinese characters
-    # Reconfigure stdout to use UTF-8 encoding (fixes Windows console issues)
     if sys.stdout.encoding != 'utf-8':
-        sys.stdout.reconfigure(encoding='utf-8')
+        try:
+            sys.stdout.reconfigure(encoding='utf-8')
+        except (AttributeError, OSError):
+            pass  # reconfigure not available or failed; continue with default
     
     handler = logging.StreamHandler(sys.stdout)
     handler.setLevel(getattr(logging, config.LOG_LEVEL))

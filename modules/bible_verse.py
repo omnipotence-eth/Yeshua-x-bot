@@ -96,7 +96,7 @@ class BibleVerseModule:
                 try:
                     fallback_ref = random.choice(FALLBACK_VERSES)
                     return self.get_verse(fallback_ref)
-                except:
+                except Exception:
                     pass
             
             # Ultimate fallback
